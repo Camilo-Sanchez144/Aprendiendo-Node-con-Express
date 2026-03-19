@@ -1,0 +1,72 @@
+1. Instalación inicial
+npm init -y
+npm install express cors morgan
+npm install -D typescript ts-node @types/node @types/express @types/cors @types/Morgan
+
+2. Crear tsconfig.json
+npx tsc --init
+
+Luego ajusta con estas opciones clave:
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "rootDir": "./src",
+    "outDir": "./dist",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "declaration": true,
+    "sourceMap": true,
+    "verbatimModuleSyntax": false,
+    "moduleDetection": "force"
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist"]
+}
+
+3. Ajustar package.json
+{
+  "name": "tu-proyecto",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "ts-node src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.0",
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0",
+    "ts-node": "^10.0.0"
+  },
+  "dependencies": {
+    "express": "^5.0.0"
+  }
+}
+
+Lo clave: "type": "module" permite importaciones ESM
+
+4. Estructura de carpetas
+proyecto/
+├── src/
+│   └── index.ts
+├── dist/          (generado al compilar)
+├── package.json
+├── tsconfig.json
+└── .gitignore
+
+5. Comandos principales
+npm run dev      # ejecuta en desarrollo (con hot reload si usas nodemon)
+npm run build    # compila a JavaScript
+npm start        # ejecuta el JavaScript compilado
+
+6. Bonus: Agregar nodemon para hot reload
+npm install -D nodemon
+
+Actualiza package.json:
+"dev": "nodemon --exec ts-node src/index.ts"
