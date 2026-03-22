@@ -1,5 +1,8 @@
 import { Request, Response } from 'express';
 import { Profesor } from '../models/profesoresModel'
+import { validate } from 'class-validator';
+import { CreateProfesorDto } from '../dtos/profesordto';
+import { plainToInstance } from 'class-transformer';
 
 class ProfesoresController{
 /*     constructor(){
@@ -29,8 +32,22 @@ class ProfesoresController{
     }     
     async ingresar(req:Request,res:Response){
         try{
-            const registro = await Profesor.save(req.body);
-            res.status(201).json(registro)
+            const dto = plainToInstance(CreateProfesorDto, req.body)
+            const errors = await validate(dto);
+            if(errors.length > 0){
+                res.status(400).json({msg:'Error de validación', errors})
+            }
+            const profesor = new Profesor()
+
+            profesor.dni = dto.dni
+            profesor.nombre = dto.nombre
+            profesor.apellido = dto.apellido
+            profesor.email = dto.email
+            profesor.profesion = dto.profesion
+            profesor.telefono= dto.telefono
+
+            await profesor.save()
+            res.status(201).json(profesor)
         }catch(err){
             if(err instanceof Error)
             res.status(500).send(err.message);
@@ -39,6 +56,8 @@ class ProfesoresController{
     async actualizar(req:Request,res:Response){
         const id = req.params.id
         try{
+
+            
             if (!req.body || Object.keys(req.body).length === 0) {
             return res.status(400).json({ msg: "No hay datos para actualizar" });
             }

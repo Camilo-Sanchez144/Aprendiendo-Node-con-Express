@@ -1,6 +1,8 @@
 import { Request, Response } from 'express';
 import { Estudiante } from '../models/estudiantesModel'
-
+import { validate } from "class-validator";
+import { plainToInstance } from "class-transformer";
+import { CreateEstudianteDto } from "../dtos/estudiantedto";
 class EstudiantesController{
 /*     constructor(){
 
@@ -29,8 +31,22 @@ class EstudiantesController{
     }     
     async ingresar(req:Request,res:Response){
         try{
-            const registro = await Estudiante.save(req.body);
-            res.status(201).json(registro)
+            const dto = plainToInstance(CreateEstudianteDto, req.body);
+            const errors = await validate(dto)
+            if(errors.length > 0){
+                res.status(400).json({msg:'Error en la validación', errors})
+            }
+
+            const estudiante = new Estudiante();
+
+            estudiante.dni = dto.dni;
+            estudiante.nombre = dto.nombre;
+            estudiante.apellido = dto.apellido;
+            estudiante.email = dto.email;
+
+            await estudiante.save()
+
+            res.status(201).json(estudiante)
         }catch(err){
             if(err instanceof Error)
             res.status(500).send(err.message);
@@ -39,16 +55,23 @@ class EstudiantesController{
     async actualizar(req:Request,res:Response){
         const id = req.params.id
         try{
-            if (!req.body || Object.keys(req.body).length === 0) {
-            return res.status(400).json({ msg: "No hay datos para actualizar" });
+            const dto = plainToInstance(CreateEstudianteDto, req.body);
+            const errors = await validate(dto)
+            if(errors.length > 0){
+                return res.status(400).json({msg:'Error de validación', errors})
             }
             const registro = await Estudiante.findOneBy({id:Number(id)})
             if(!registro){
                 return res.status(404).json({ msg: "Estudiante no encontrado" });
             }
-            await Estudiante.update({id:Number(id)},req.body)
-            const registroActualizado = await Estudiante.findOneBy({id:Number(id)})
-            res.status(200).json(registroActualizado)
+
+            registro.dni= dto.dni;
+            registro.nombre = dto.nombre;
+            registro.apellido = dto.apellido;
+            registro.email = dto.email;
+
+            await registro.save()
+            res.status(200).json(registro)
         }catch(err){
             if(err instanceof Error)
             res.status(500).send(err.message);

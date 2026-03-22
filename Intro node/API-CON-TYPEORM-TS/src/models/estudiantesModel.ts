@@ -7,7 +7,7 @@ export class Estudiante extends BaseEntity{
     id:number;
     
     @Column()
-    dni:String;
+    dni:number;
 
     @Column()    
     nombre:String;

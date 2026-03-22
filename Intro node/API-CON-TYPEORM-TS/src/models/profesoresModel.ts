@@ -8,7 +8,7 @@ export class Profesor extends BaseEntity{
     id:number;
     
     @Column()
-    dni:String;
+    dni:number;
     
     @Column()    
     nombre:String;
@@ -23,7 +23,7 @@ export class Profesor extends BaseEntity{
     profesion:String;
 
     @Column()
-    telefono:String;
+    telefono:number;
 
     @CreateDateColumn()
     creareAt:Date
