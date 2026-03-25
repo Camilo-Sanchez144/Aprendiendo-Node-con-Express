@@ -70,3 +70,14 @@ npm install -D nodemon
 
 Actualiza package.json:
 "dev": "nodemon --exec ts-node src/index.ts"
+
+instalar JWT
+npm install jsonwebtoken bcrypt
+npm install -D @types/jsonwebtoken @types/bcrypt
+npm i --save-dev @types/jsonwebtoken
+
+instalar validadores
+npm install class-validator class-transformer
+
+instalar bcrypt
+npm i --save-dev @types/bcrypt

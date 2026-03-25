@@ -6,6 +6,8 @@ import { Request, Response } from 'express';
 import estudiantes from './routes/estudiantesRoutes';
 import profesores from './routes/profesoresRoutes';
 import cursos from './routes/cursosRoutes';
+import login from './routes/LoginRoutes';
+
 
 const app = express();
 app.use(express.json());
@@ -15,6 +17,8 @@ app.use(morgan('dev'));
 app.use('/cursos', cursos);
 app.use('/estudiantes', estudiantes);
 app.use('/profesores', profesores);
+app.use('/login', login)
+
 
 app.get('/', (req:Request, res:Response) => {
     res.send('Hola mundo');

@@ -26,7 +26,7 @@ export class Profesor extends BaseEntity{
     telefono:number;
 
     @CreateDateColumn()
-    creareAt:Date
+    createAt:Date
 
     @UpdateDateColumn()
     updateAt:Date

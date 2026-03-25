@@ -1,13 +1,14 @@
 import express from 'express';
 import estudiantesController from '../controllers/estudiantesController'
+import { authMiddleware } from '../JWT/userAuthentication';
 const router = express.Router();
 
-router.get('/',estudiantesController.consultar)
-router.post('/',estudiantesController.ingresar)
+router.get('/',authMiddleware, estudiantesController.consultar)
+router.post('/',authMiddleware, estudiantesController.ingresar)
 router.route('/:id')
-    .get(estudiantesController.consultarDetalle)
-    .put(estudiantesController.actualizar)
-    .delete(estudiantesController.borrar)
+    .get(authMiddleware, estudiantesController.consultarDetalle)
+    .put(authMiddleware, estudiantesController.actualizar)
+    .delete(authMiddleware, estudiantesController.borrar)
 
 /* router.post('/',estudiantesController.ingresar)
 router.put('/', estudiantesController.actualizar)

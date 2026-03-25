@@ -3,6 +3,7 @@ import { Profesor } from '../models/profesoresModel'
 import { validate } from 'class-validator';
 import { CreateProfesorDto } from '../dtos/profesordto';
 import { plainToInstance } from 'class-transformer';
+import { ProfesorService } from '../services/ProfesorService';
 
 class ProfesoresController{
 /*     constructor(){
@@ -31,23 +32,15 @@ class ProfesoresController{
         }
     }     
     async ingresar(req:Request,res:Response){
+        const service = new ProfesorService()
         try{
             const dto = plainToInstance(CreateProfesorDto, req.body)
             const errors = await validate(dto);
             if(errors.length > 0){
                 res.status(400).json({msg:'Error de validación', errors})
             }
-            const profesor = new Profesor()
-
-            profesor.dni = dto.dni
-            profesor.nombre = dto.nombre
-            profesor.apellido = dto.apellido
-            profesor.email = dto.email
-            profesor.profesion = dto.profesion
-            profesor.telefono= dto.telefono
-
-            await profesor.save()
-            res.status(201).json(profesor)
+            const registro = await service.crearProfesor(dto)
+            res.status(201).json(registro)
         }catch(err){
             if(err instanceof Error)
             res.status(500).send(err.message);
@@ -55,19 +48,16 @@ class ProfesoresController{
     }
     async actualizar(req:Request,res:Response){
         const id = req.params.id
+        const service = new ProfesorService()
         try{
+            const dto = plainToInstance(CreateProfesorDto, req.body)
+            const errors = await validate(dto)
+            if(errors.length>0){
+                res.status(400).json({msg:'Error de validación',errors})
+            }
+            const registro = await service.actualizarProfesor(id,dto)
 
-            
-            if (!req.body || Object.keys(req.body).length === 0) {
-            return res.status(400).json({ msg: "No hay datos para actualizar" });
-            }
-            const registro = await Profesor.findOneBy({id:Number(id)})
-            if(!registro){
-                return res.status(404).json({ msg: "Profesor no encontrado" });
-            }
-            await Profesor.update({id:Number(id)},req.body)
-            const registroActualizado = await Profesor.findOneBy({id:Number(id)})
-            res.status(200).json(registroActualizado)
+            res.status(200).json(registro)
         }catch(err){
             if(err instanceof Error)
             res.status(500).send(err.message);
