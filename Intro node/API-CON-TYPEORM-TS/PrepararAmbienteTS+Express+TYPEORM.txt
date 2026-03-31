@@ -1,38 +1,49 @@
 1. Instalación inicial
 npm init -y
 npm install express cors morgan
-npm install -D typescript ts-node @types/node @types/express @types/cors @types/Morgan
+npm install -D typescript ts-node @types/node @types/express @types/cors @types/morgan
+npm install --save-dev @types/node
+npm install -D nodemon
+npm install reflect-metadata
+npm install mysql2
 
 2. Crear tsconfig.json
 npx tsc --init
 
 Luego ajusta con estas opciones clave:
-{
-  "compilerOptions": {
-    "target": "ES2020",
-    "module": "ESNext",
+"compilerOptions": {
+    "esModuleInterop": true,
     "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+
     "rootDir": "./src",
     "outDir": "./dist",
-    "strict": true,
-    "esModuleInterop": true,
-    "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true,
-    "resolveJsonModule": true,
-    "declaration": true,
+
+    "module": "CommonJS",
+    "target": "ES2020",
+    "types": [],
+
     "sourceMap": true,
+    "declaration": true,
+    "declarationMap": true,
+
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
+
+    "strict": true,
+    "jsx": "react-jsx",
     "verbatimModuleSyntax": false,
-    "moduleDetection": "force"
-  },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules", "dist"]
-}
+    "isolatedModules": true,
+    "noUncheckedSideEffectImports": true,
+    "moduleDetection": "force",
+    "skipLibCheck": true,
+  }
 
 3. Ajustar package.json
 {
   "name": "tu-proyecto",
   "version": "1.0.0",
-  "type": "module",
   "scripts": {
     "dev": "ts-node src/index.ts",
     "build": "tsc",
@@ -49,7 +60,6 @@ Luego ajusta con estas opciones clave:
   }
 }
 
-Lo clave: "type": "module" permite importaciones ESM
 
 4. Estructura de carpetas
 proyecto/
@@ -65,11 +75,6 @@ npm run dev      # ejecuta en desarrollo (con hot reload si usas nodemon)
 npm run build    # compila a JavaScript
 npm start        # ejecuta el JavaScript compilado
 
-6. Bonus: Agregar nodemon para hot reload
-npm install -D nodemon
-
-Actualiza package.json:
-"dev": "nodemon --exec ts-node src/index.ts"
 
 instalar JWT
 npm install jsonwebtoken bcrypt
